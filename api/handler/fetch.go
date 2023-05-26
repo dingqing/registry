@@ -4,10 +4,10 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/dingqing/registry/global"
+	"github.com/dingqing/registry/model"
+	"github.com/dingqing/registry/pkg/errcode"
 	"github.com/gin-gonic/gin"
-	"github.com/skyhackvip/service_discovery/global"
-	"github.com/skyhackvip/service_discovery/model"
-	"github.com/skyhackvip/service_discovery/pkg/errcode"
 )
 
 func FetchHandler(c *gin.Context) {

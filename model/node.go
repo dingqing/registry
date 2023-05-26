@@ -3,16 +3,18 @@ package model
 import (
 	"encoding/json"
 	"fmt"
+
 	//	"github.com/gin-gonic/gin"
-	"github.com/skyhackvip/service_discovery/configs"
-	"github.com/skyhackvip/service_discovery/pkg/errcode"
-	"github.com/skyhackvip/service_discovery/pkg/httputil"
 	"log"
 	"strconv"
 	"time"
+
+	"github.com/dingqing/registry/configs"
+	"github.com/dingqing/registry/pkg/errcode"
+	"github.com/dingqing/registry/pkg/httputil"
 )
 
-//node is a special client
+// node is a special client
 type Node struct {
 	config      *configs.Config
 	addr        string

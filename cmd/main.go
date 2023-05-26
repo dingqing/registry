@@ -10,10 +10,10 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/skyhackvip/service_discovery/api"
-	"github.com/skyhackvip/service_discovery/configs"
-	"github.com/skyhackvip/service_discovery/global"
-	"github.com/skyhackvip/service_discovery/model"
+	"github.com/dingqing/registry/api"
+	"github.com/dingqing/registry/configs"
+	"github.com/dingqing/registry/global"
+	"github.com/dingqing/registry/model"
 )
 
 func main() {

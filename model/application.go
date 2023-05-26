@@ -1,10 +1,11 @@
 package model
 
 import (
-	"github.com/skyhackvip/service_discovery/pkg/errcode"
 	"log"
 	"sync"
 	"time"
+
+	"github.com/dingqing/registry/pkg/errcode"
 )
 
 type Application struct {
@@ -21,9 +22,9 @@ func NewApplication(appid string) *Application {
 	}
 }
 
-//注册app add instance
-//返回 *Instance 实例信息
-//返回 bool true 已有实例升级 false 新增实例
+// 注册app add instance
+// 返回 *Instance 实例信息
+// 返回 bool true 已有实例升级 false 新增实例
 func (app *Application) AddInstance(in *Instance, latestTimestamp int64) (*Instance, bool) {
 	app.lock.Lock()
 	defer app.lock.Unlock()
@@ -44,7 +45,7 @@ func (app *Application) AddInstance(in *Instance, latestTimestamp int64) (*Insta
 	return returnIns, !ok
 }
 
-//续约
+// 续约
 func (app *Application) Renew(hostname string) (*Instance, bool) {
 	app.lock.Lock()
 	defer app.lock.Unlock()
@@ -58,7 +59,7 @@ func (app *Application) Renew(hostname string) (*Instance, bool) {
 	return copyInstance(appIn), true
 }
 
-//取消
+// 取消
 func (app *Application) Cancel(hostname string, latestTimestamp int64) (*Instance, bool, int) {
 	newInstance := new(Instance)
 	app.lock.Lock()
@@ -75,7 +76,7 @@ func (app *Application) Cancel(hostname string, latestTimestamp int64) (*Instanc
 	return newInstance, true, len(app.instances)
 }
 
-//获取所有*Instance
+// 获取所有*Instance
 func (app *Application) GetAllInstances() []*Instance {
 	app.lock.RLock()
 	defer app.lock.RUnlock()
@@ -88,8 +89,8 @@ func (app *Application) GetAllInstances() []*Instance {
 	return rs
 }
 
-//获取*Instance信息
-//status=1 return up 实例
+// 获取*Instance信息
+// status=1 return up 实例
 func (app *Application) GetInstance(status uint32, latestTime int64) (*FetchData, *errcode.Error) {
 	app.lock.RLock()
 	defer app.lock.RUnlock()
@@ -121,7 +122,7 @@ func (app *Application) GetInstanceLen() int {
 	return instanceLen
 }
 
-//update app latest_timestamp
+// update app latest_timestamp
 func (app *Application) upLatestTimestamp(latestTimestamp int64) {
 	if latestTimestamp <= app.latestTimestamp { //already latest
 		latestTimestamp = app.latestTimestamp + 1 //increase
@@ -129,7 +130,7 @@ func (app *Application) upLatestTimestamp(latestTimestamp int64) {
 	app.latestTimestamp = latestTimestamp
 }
 
-//deep copy
+// deep copy
 func copyInstance(src *Instance) *Instance {
 	dst := new(Instance)
 	*dst = *src

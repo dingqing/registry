@@ -3,13 +3,14 @@ package model
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/skyhackvip/service_discovery/configs"
-	"github.com/skyhackvip/service_discovery/pkg/errcode"
-	"github.com/skyhackvip/service_discovery/pkg/httputil"
 	"log"
 	"net/url"
 	"sync/atomic"
 	"time"
+
+	"github.com/dingqing/registry/configs"
+	"github.com/dingqing/registry/pkg/errcode"
+	"github.com/dingqing/registry/pkg/httputil"
 )
 
 type Discovery struct {
@@ -19,7 +20,7 @@ type Discovery struct {
 	Nodes     atomic.Value
 }
 
-//discovery
+// discovery
 func NewDiscovery(config *configs.GlobalConfig) *Discovery {
 	//init discovery
 	dis := &Discovery{
@@ -45,7 +46,7 @@ func NewDiscovery(config *configs.GlobalConfig) *Discovery {
 	return dis
 }
 
-//sync registry data
+// sync registry data
 func (dis *Discovery) initSync() {
 	nodes := dis.Nodes.Load().(*Nodes)
 	for _, node := range nodes.AllNodes() {
@@ -82,7 +83,7 @@ func (dis *Discovery) initSync() {
 	nodes.SetUp()
 }
 
-//register current discovery node
+// register current discovery node
 func (dis *Discovery) regSelf() *Instance {
 	log.Println("### discovery node register self when start ###")
 	//register
@@ -104,7 +105,7 @@ func (dis *Discovery) regSelf() *Instance {
 	return instance
 }
 
-//renew current discovery node
+// renew current discovery node
 func (dis *Discovery) renewTask(instance *Instance) {
 	now := time.Now().UnixNano()
 	ticker := time.NewTicker(configs.RenewInterval) //30 second
@@ -135,7 +136,7 @@ func (dis *Discovery) CancelSelf() {
 	dis.Nodes.Load().(*Nodes).Replicate(configs.Cancel, instance) //broadcast
 }
 
-//update discovery nodes list
+// update discovery nodes list
 func (dis *Discovery) nodesPerception() {
 	var lastTimestamp int64
 	ticker := time.NewTicker(configs.NodePerceptionInterval)
@@ -173,7 +174,7 @@ func (dis *Discovery) nodesPerception() {
 	}
 }
 
-//discovery exit protect after 1 minute
+// discovery exit protect after 1 minute
 func (dis *Discovery) exitProtect() {
 	time.Sleep(configs.ProtectTimeInterval)
 	dis.protected = false

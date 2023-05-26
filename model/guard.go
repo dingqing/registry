@@ -1,9 +1,10 @@
 package model
 
 import (
-	"github.com/skyhackvip/service_discovery/configs"
 	"sync"
 	"sync/atomic"
+
+	"github.com/dingqing/registry/configs"
 )
 
 type Guard struct {

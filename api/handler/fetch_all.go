@@ -4,8 +4,8 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/dingqing/registry/global"
 	"github.com/gin-gonic/gin"
-	"github.com/skyhackvip/service_discovery/global"
 )
 
 func FetchAllHandler(c *gin.Context) {

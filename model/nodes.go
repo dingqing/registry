@@ -2,8 +2,9 @@ package model
 
 import (
 	//"github.com/gin-gonic/gin"
-	"github.com/skyhackvip/service_discovery/configs"
 	"log"
+
+	"github.com/dingqing/registry/configs"
 )
 
 type Nodes struct {
@@ -11,7 +12,7 @@ type Nodes struct {
 	selfAddr string
 }
 
-//new nodes
+// new nodes
 func NewNodes(c *configs.GlobalConfig) *Nodes {
 	nodes := make([]*Node, 0, len(c.Nodes))
 	for _, addr := range c.Nodes {
@@ -24,7 +25,7 @@ func NewNodes(c *configs.GlobalConfig) *Nodes {
 	}
 }
 
-//replicate to other nodes
+// replicate to other nodes
 func (nodes *Nodes) Replicate(action configs.Action, instance *Instance) error {
 	log.Printf("$$$$$$$$$$ %v $$$$$$$$$$$$\n", len(nodes.nodes))
 	if len(nodes.nodes) == 0 {
@@ -39,7 +40,7 @@ func (nodes *Nodes) Replicate(action configs.Action, instance *Instance) error {
 	return nil
 }
 
-//use node action
+// use node action
 func (nodes *Nodes) action(node *Node, action configs.Action, instance *Instance) {
 	switch action {
 	case configs.Register:
@@ -51,7 +52,7 @@ func (nodes *Nodes) action(node *Node, action configs.Action, instance *Instance
 	}
 }
 
-//get all nodes
+// get all nodes
 func (nodes *Nodes) AllNodes() []*Node {
 	nodeRs := make([]*Node, 0, len(nodes.nodes))
 	for _, node := range nodes.nodes {
@@ -64,7 +65,7 @@ func (nodes *Nodes) AllNodes() []*Node {
 	return nodeRs
 }
 
-//set up current node
+// set up current node
 func (nodes *Nodes) SetUp() {
 	for _, node := range nodes.nodes {
 		if node.addr == nodes.selfAddr {

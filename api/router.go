@@ -1,8 +1,8 @@
 package api
 
 import (
+	"github.com/dingqing/registry/api/handler"
 	"github.com/gin-gonic/gin"
-	"github.com/skyhackvip/service_discovery/api/handler"
 )
 
 func InitRouter() *gin.Engine {

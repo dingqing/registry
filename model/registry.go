@@ -2,13 +2,16 @@ package model
 
 import (
 	"fmt"
-	"github.com/skyhackvip/service_discovery/configs"
-	//"github.com/skyhackvip/service_discovery/global"
-	"github.com/skyhackvip/service_discovery/pkg/errcode"
+
+	"github.com/dingqing/registry/configs"
+
+	//"github.com/dingqing/registry/global"
 	"log"
 	"math/rand"
 	"sync"
 	"time"
+
+	"github.com/dingqing/registry/pkg/errcode"
 )
 
 type Registry struct {
@@ -26,7 +29,7 @@ func NewRegistry() *Registry {
 	return r
 }
 
-//register
+// register
 func (r *Registry) Register(instance *Instance, latestTimestamp int64) (*Application, *errcode.Error) {
 	key := getKey(instance.AppId, instance.Env)
 	r.lock.RLock()
@@ -48,7 +51,7 @@ func (r *Registry) Register(instance *Instance, latestTimestamp int64) (*Applica
 	return app, nil
 }
 
-//renew
+// renew
 func (r *Registry) Renew(env, appid, hostname string) (*Instance, *errcode.Error) {
 	//find app
 	app, ok := r.getApplication(appid, env)
@@ -64,7 +67,7 @@ func (r *Registry) Renew(env, appid, hostname string) (*Instance, *errcode.Error
 	return in, nil
 }
 
-//cancel
+// cancel
 func (r *Registry) Cancel(env, appid, hostname string, latestTimestamp int64) (*Instance, *errcode.Error) {
 	//find app
 	app, ok := r.getApplication(appid, env)
@@ -85,7 +88,7 @@ func (r *Registry) Cancel(env, appid, hostname string, latestTimestamp int64) (*
 	return instance, nil
 }
 
-//get by appname
+// get by appname
 func (r *Registry) Fetch(env, appid string, status uint32, latestTime int64) (*FetchData, *errcode.Error) {
 	app, ok := r.getApplication(appid, env)
 	if !ok {
@@ -94,7 +97,7 @@ func (r *Registry) Fetch(env, appid string, status uint32, latestTime int64) (*F
 	return app.GetInstance(status, latestTime) //err = not modify
 }
 
-//get all key=appid, value=[]*Instance
+// get all key=appid, value=[]*Instance
 func (r *Registry) FetchAll() map[string][]*Instance {
 	apps := r.getAllApplications()
 	rs := make(map[string][]*Instance)
@@ -142,7 +145,7 @@ func (r *Registry) evictTask() {
 	}
 }
 
-//evict expired instance
+// evict expired instance
 func (r *Registry) evict() {
 	now := time.Now().UnixNano()
 	var expiredInstances []*Instance

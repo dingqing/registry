@@ -1,7 +1,7 @@
 package global
 
 import (
-	"github.com/skyhackvip/service_discovery/model"
+	"github.com/dingqing/registry/model"
 )
 
 // init discovery
